@@ -1,0 +1,12 @@
+.vimbox-popup {
+  position: absolute;
+  background: #222;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 9999;
+  font-family: sans-serif;
+  max-width: 300px;
+  border: "2px solid red";
+}
