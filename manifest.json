@@ -1,10 +1,12 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Vimbox For Firefox",
   "version": "0.1.0",
   "description": "Переводит выделенный текст на странице",
-  "permissions": ["activeTab", "scripting"],
-  "author": "https://github.com/Avdushin",
+  "permissions": ["activeTab", "tabs", "http://localhost:5000/"],
+  "background": {
+    "scripts": ["background.js"]
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -12,6 +14,12 @@
       "css": ["popup.css"]
     }
   ],
+  "web_accessible_resources": ["popup.css"],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": "images/icon.png"
+  },
+  "author": "https://github.com/Avdushin",
   "icons": {
     "48": "images/icon.png"
   }

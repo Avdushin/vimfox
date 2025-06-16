@@ -1,4 +1,7 @@
 function createPopup(translation, x, y) {
+  const existingPopup = document.querySelector(".vimbox-popup");
+  if (existingPopup) existingPopup.remove();
+
   const popup = document.createElement("div");
   popup.textContent = translation;
   popup.className = "vimbox-popup";
@@ -11,11 +14,17 @@ function createPopup(translation, x, y) {
   popup.style.zIndex = "9999";
   popup.style.top = `${y + 10}px`;
   popup.style.left = `${x + 10}px`;
+  popup.style.maxWidth = "300px";
+  popup.style.userSelect = "text"; // ✅ позволяет копировать текст
+  popup.style.cursor = "text";
+
   document.body.appendChild(popup);
 
-  const removePopup = () => {
-    popup.remove();
-    document.removeEventListener("click", removePopup);
+  const removePopup = (ev) => {
+    if (!popup.contains(ev.target)) {
+      popup.remove();
+      document.removeEventListener("click", removePopup);
+    }
   };
   setTimeout(() => {
     document.addEventListener("click", removePopup);
@@ -23,41 +32,42 @@ function createPopup(translation, x, y) {
 }
 
 async function translateText(text) {
-  try {
-    const res = await fetch("http://localhost:5000/translate", {
-      method: "POST",
-      body: JSON.stringify({
-        q: text,
-        source: "en",
-        target: "ru",
-        format: "text"
-      }),
-      headers: {
-        "Content-Type": "application/json"
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage(
+      {
+        type: "translate",
+        payload: {
+          q: text,
+          source: "en",
+          target: "ru",
+          format: "text"
+        }
+      },
+      (response) => {
+        if (response?.success) {
+          resolve(response.translation);
+        } else if (!response) {
+          resolve("Переводчик недоступен");
+        } else {
+          resolve("Ошибка перевода");
+        }
       }
-    });
-
-    if (!res.ok) {
-      console.error("Ошибка HTTP:", res.status, res.statusText);
-      const errText = await res.text();
-      console.error("Ответ сервера:", errText);
-      return "Ошибка перевода";
-    }
-
-    const data = await res.json();
-    console.log("Translation result:", data);
-    return data.translatedText;
-  } catch (err) {
-    console.error("Translation error:", err);
-    return "Ошибка перевода";
-  }
+    );
+  });
 }
 
+
 document.addEventListener("mouseup", async (e) => {
-  const selectedText = window.getSelection().toString().trim();
-  if (selectedText.length > 0) {
-    console.log("Selected text:", selectedText);
-    const translation = await translateText(selectedText);
-    createPopup(translation, e.pageX, e.pageY);
-  }
+  const selection = window.getSelection();
+  if (!selection || selection.isCollapsed) return;
+
+  const selectedText = selection.toString().trim();
+  if (selectedText.length < 2) return;
+
+  // Не переводим текст в попапе
+  if (e.target.closest(".vimbox-popup")) return;
+
+  const translation = await translateText(selectedText);
+  createPopup(translation, e.pageX, e.pageY);
+  console.log("Selected:", selectedText);
 });

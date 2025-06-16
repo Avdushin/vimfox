@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Vimbox</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 12px;
+      width: 250px;
+      background-color: #f5f5f5;
+    }
+
+    h3 {
+      margin-top: 0;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 6px;
+      margin: 6px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .result {
+      margin-top: 10px;
+      padding: 8px;
+      background: #222;
+      color: white;
+      border-radius: 6px;
+      min-height: 40px;
+      white-space: pre-wrap;
+    }
+
+    .lang-selector {
+      font-size: 12px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>Vimbox</h3>
+  <input type="text" id="text-input" placeholder="Введите текст..." />
+  <div class="lang-selector">
+    Переводить на:
+    <select id="lang-select">
+      <option value="auto">Авто</option>
+      <option value="en">Английский</option>
+      <option value="ru">Русский</option>
+      <option value="de">Немецкий</option>
+      <option value="fr">Французский</option>
+      <option value="es">Испанский</option>
+      <option value="zh">Китайский</option>
+      <!-- Можно расширить список -->
+    </select>
+  </div>
+  <div class="result" id="translation-result">Перевод появится здесь...</div>
+
+  <script>
+    const input = document.getElementById("text-input");
+    const langSelect = document.getElementById("lang-select");
+    const resultDiv = document.getElementById("translation-result");
+
+    let debounceTimer;
+
+    function translate(text, target) {
+      chrome.runtime.sendMessage({
+        type: "translate",
+        payload: {
+          q: text,
+          source: "auto",
+          target: target === "auto" ? "ru" : target,
+          format: "text"
+        }
+      }, (response) => {
+        if (response?.success) {
+          resultDiv.textContent = response.translation;
+        } else {
+          resultDiv.textContent = "Ошибка перевода";
+        }
+      });
+    }
+
+    input.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      const text = input.value.trim();
+      if (text.length < 2) {
+        resultDiv.textContent = "Введите текст для перевода";
+        return;
+      }
+      debounceTimer = setTimeout(() => {
+        translate(text, langSelect.value);
+      }, 500);
+    });
+
+    langSelect.addEventListener("change", () => {
+      const text = input.value.trim();
+      if (text.length > 1) {
+        translate(text, langSelect.value);
+      }
+    });
+  </script>
+</body>
+
+</html>
