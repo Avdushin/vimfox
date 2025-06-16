@@ -7,6 +7,21 @@ body {
 
 h3 {
   margin-top: 0;
+  line-height: 0.5;
+}
+
+.author {
+  text-align: center;
+  /* font-size: 15px; */
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.author > a {
+  text-decoration: none;
+  color: #333;
 }
 
 input,
@@ -22,7 +37,7 @@ select {
 .result {
   margin-top: 10px;
   padding: 8px;
-  background: #dfdddd;
+  /* background: #dfdddd; */
   color: #333;
   border-radius: 6px;
   min-height: 40px;
@@ -32,4 +47,18 @@ select {
 .lang-selector {
   font-size: 12px;
   color: #555;
+}
+
+.sd {
+  text-align: center;
+  width: 100%;
+  margin: 10px auto;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.sd a {
+  text-decoration: none;
+  color: rgb(8, 122, 216);
+  font-size: 15px;
 }

@@ -4,26 +4,28 @@
 <head>
     <meta charset="utf-8" />
     <title>Vimfox - vimbox rom Firefox</title>
-    <link rel="stylesheet" href="css/pop.css">
+    <link rel="stylesheet" href="css/popup.css">
 </head>
 
 <body>
-    <h3>Vimfox</h3>
-    <input type="text" id="text-input" placeholder="Введите текст..." />
+    <h3>Vimfox -
+        <a href="https://github.com/Avdushin" class="author">
+            compact translator
+        </a>
+    </h3>
+    <input type="text" id="text-input" placeholder="Перевести слво или фразу..." />
     <div class="lang-selector">
-        Переводить на:
+        Перевести на:
         <select id="lang-select">
             <option value="auto">Авто</option>
             <option value="en">Английский</option>
             <option value="ru">Русский</option>
-            <option value="de">Немецкий</option>
-            <option value="fr">Французский</option>
-            <option value="es">Испанский</option>
-            <option value="zh">Китайский</option>
         </select>
     </div>
-    <div class="result" id="translation-result">Перевод появится здесь...</div>
-
+    <div class="result" id="translation-result"></div>
+    <!-- <div class="sd"> -->
+    <!-- <a href="https://github.com/Avdushin" target="_blank">support dev</a> -->
+    <!-- </div> -->
     <script src="popup.js"></script>
 </body>
 
