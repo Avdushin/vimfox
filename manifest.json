@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Vimbox For Firefox",
+  "name": "viimfox - a simple convenient translator (Vimbox For Firefox)",
   "version": "0.1.0",
-  "description": "Переводит выделенный текст на странице",
+  "description": "Компактный и удобный переводчик. Переводит выделенный текст на странице",
   "permissions": ["activeTab", "tabs", "http://localhost:5000/"],
   "background": {
     "scripts": ["background.js"]
