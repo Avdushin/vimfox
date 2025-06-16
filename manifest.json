@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "viimfox - a simple convenient translator (Vimbox For Firefox)",
+  "name": "VimFox - компактный и удобный переводчик",
   "version": "0.1.0",
-  "description": "Компактный и удобный переводчик. Переводит выделенный текст на странице",
+  "description": "Бесплатное расширение для перевода английских слов и выражений на веб-страницах. Полезно для чтения иностранных источников и изучения языка.",
   "permissions": ["activeTab", "tabs", "http://localhost:5000/"],
   "background": {
     "scripts": ["background.js"]
@@ -17,10 +17,10 @@
   "web_accessible_resources": ["popup.css"],
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "images/icon.png"
+    "default_icon": "images/logo.png"
   },
-  "author": "https://github.com/Avdushin",
+  "homepage_url": "https://github.com/Avdushin/vimfox",
   "icons": {
-    "48": "images/icon.png"
+    "48": "images/logo.png"
   }
 }
